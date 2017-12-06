@@ -2,8 +2,6 @@
 // created by jiadong chen
 // http://www.chenjd.me
 //
-
-
 Shader "chenjd/OutlineShader"
 {
 	Properties
@@ -12,12 +10,10 @@ Shader "chenjd/OutlineShader"
 		_OutlineFactor("Outline Factor", Range(0, 6)) = 3
 		_OutlineColor("Outline Color", Color) = (0, 0, 0, 1)
 	}
-
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
-
 		// 第一个pass用来渲染正常的模型
 		Pass
 		{
@@ -57,18 +53,16 @@ Shader "chenjd/OutlineShader"
 			}
 			ENDCG
 		}
-
 		//第二个pass渲染轮廓
 		Pass
 		{
+			//剔除前面
 			Cull Front
 
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 			#include "UnityCG.cginc"
-
-
 
 			float _OutlineFactor;
 			fixed4 _OutlineColor;
@@ -79,13 +73,13 @@ Shader "chenjd/OutlineShader"
 				float4 pos = UnityObjectToClipPos(v.vertex);
 
 				float3 normal = mul((float3x3) UNITY_MATRIX_MVP, v.normal);
-
+				//float3 normal = v.normal;
+				//坐标往法线xy方向扩展
 				pos.xy += _OutlineFactor * normal.xy;
-
+				
 				return pos;
 
 			}
-
 
 			fixed4 frag() : SV_Target {
 				return _OutlineColor;

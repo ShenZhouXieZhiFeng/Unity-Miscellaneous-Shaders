@@ -29,9 +29,9 @@
 
 		void vert(inout appdata_full vertex)
 		{
+			//利用点坐标对相机rendertexture采样，采样值有轨迹的地方不为0
 			vertex.vertex.y -= tex2Dlod(_SnowTrackTex, float4(vertex.texcoord.xy, 0, 0)).r * _SnowTrackFactor;
 		}
-
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
